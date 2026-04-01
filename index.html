@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Proyecto Lector IED EL PUEBLO: Mochila Viajera</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f0e6 0%, #e8dccc 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #2d2418;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background-color: rgba(255, 253, 245, 0.95);
+            border-radius: 40px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1), 0 5px 15px rgba(0,0,0,0.05);
+            overflow: hidden;
+            backdrop-filter: blur(2px);
+            border: 1px solid #f3e5c9;
+        }
+
+        .header {
+            background: #5e3a1f;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 200" fill="%23f7d44a" opacity="0.1"><path d="M0,64L80,74.7C160,85,320,107,480,106.7C640,107,800,85,960,80C1120,75,1280,85,1360,90.7L1440,96L1440,0L1360,0C1280,0,1120,0,960,0C800,0,640,0,480,0C320,0,160,0,80,0L0,0Z"/></svg>');
+            background-repeat: no-repeat;
+            background-position: bottom;
+            background-size: cover;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            border-bottom: 5px solid #f4c542;
+        }
+
+        .escudo {
+            width: 70px;
+            height: auto;
+            filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.3));
+            background: white;
+            border-radius: 12px;
+            padding: 5px;
+        }
+
+        .header-text {
+            flex: 1;
+            text-align: center;
+            color: white;
+        }
+
+        .header-text h1 {
+            font-size: 1.6rem;
+            margin: 5px 0;
+            text-shadow: 2px 2px 0 #3a2a1a;
+        }
+
+        .header-text p {
+            font-style: italic;
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .section {
+            padding: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #4b2e16;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e2cfaa;
+            border-radius: 50px;
+            font-size: 1rem;
+            background: #fffcf5;
+            transition: 0.2s;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: #f4b942;
+            box-shadow: 0 0 0 3px rgba(244, 185, 66, 0.2);
+        }
+
+        button {
+            background: #f4b942;
+            color: #2d2418;
+            border: none;
+            padding: 12px 24px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: 0.2s;
+            margin-top: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        button:hover {
+            background: #e09d32;
+            transform: scale(0.98);
+        }
+
+        .btn-secondary {
+            background: #8b6b42;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #6a4e2c;
+        }
+
+        .question-card {
+            background: #fffaf0;
+            border-left: 8px solid #f4b942;
+            padding: 20px;
+            margin-bottom: 25px;
+            border-radius: 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+
+        .fragmento {
+            background: #f7efdc;
+            padding: 12px 16px;
+            border-radius: 16px;
+            font-family: Georgia, serif;
+            font-size: 0.9rem;
+            border-left: 4px solid #8b6b42;
+            margin-bottom: 15px;
+            color: #3a2a1a;
+        }
+
+        .fragmento strong {
+            color: #b35f1a;
+        }
+
+        .question-text {
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+        }
+
+        .options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .option {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: #f3ebd8;
+            padding: 8px 15px;
+            border-radius: 40px;
+            cursor: pointer;
+            transition: 0.1s;
+        }
+
+        .option.selected {
+            background: #f4b942;
+            color: white;
+            font-weight: bold;
+        }
+
+        .feedback {
+            background: #f9e5c1;
+            padding: 15px;
+            border-radius: 20px;
+            margin: 20px 0;
+        }
+
+        .stats {
+            background: #e8dbbc;
+            padding: 15px;
+            border-radius: 20px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .result-item {
+            margin: 10px 0;
+            padding: 8px;
+            background: #fef1df;
+            border-radius: 12px;
+        }
+
+        @media (max-width: 700px) {
+            .section { padding: 20px; }
+            .options { flex-direction: column; }
+            .header-text h1 { font-size: 1.2rem; }
+            .escudo { width: 55px; }
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            font-size: 0.8rem;
+            color: #6f5a3e;
+            border-top: 1px solid #f3e5c9;
+        }
+
+        .ilustration {
+            text-align: center;
+            font-size: 2.5rem;
+            margin: 15px 0;
+        }
+    </style>
+</head>
+<body>
+<div class="container" id="app">
+    <div class="header">
+        <img class="escudo" src="EscudoIedElPueblo.jpg" alt="Escudo IED El Pueblo" onerror="this.onerror=null; this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'%3E%3Crect width=\'100\' height=\'100\' fill=\'%23b33\'/%3E%3Ctext x=\'50\' y=\'55\' font-size=\'14\' text-anchor=\'middle\' fill=\'white\'%3EIED%3C/text%3E%3C/svg%3E';">
+        <div class="header-text">
+            <h1>📚 Proyecto Lector IED EL PUEBLO<br>Mochila Viajera</h1>
+            <p>“Sabiduría, Libertad, Respeto”</p>
+        </div>
+    </div>
+
+    <div id="mainContent" class="section">
+        <!-- Contenido dinámico -->
+    </div>
+    <footer>
+        🐕‍🦺 Lectura: "Un lugar para ti" - Luisa Noguera Arrieta | Fomento de comprensión lectora
+    </footer>
+</div>
+
+<script>
+    // -------------------- PREGUNTAS CON FRAGMENTOS ESPECÍFICOS --------------------
+    const niveles = {
+        literal: {
+            nombre: "Nivel Literal",
+            preguntas: [
+                { texto: "¿Cuál era el nombre del perro pastor alemán que nació en la primera camada de Paco y Narda?", opciones: ["Juan Carlos", "Juancho", "Kunta", "Zambo"], correcta: "B", fragmento: "Quedaba solo un cachorro, que se había apegado mucho a Narda. Desde que se fueron sus hermanos, tenía la atención de su mamá sólo para él... -Hola mi pastorcito, -entró saludando una señora- por fin vine por ti. El perrito se encontraba durmiendo al sol... -Juan Carlos, como yo -le respondió el niño. -No hijito, no puedes ponerle tu nombre al perro. Así no me van a hacer caso ninguno... -Entonces se llamará Juancho.", explicacion: "Juancho es el pastor alemán protagonista. Al principio lo llamaron así por Juan Carlos." },
+                { texto: "¿Por qué los papás de Juan Carlos tuvieron que llevar a Juancho al campo?", opciones: ["Porque se enfermó", "Porque en el apartamento no permitían perros", "Porque mordió a un vecino", "Porque querían venderlo"], correcta: "B", fragmento: "Un día, se dio cuenta de que sus amos estaban muy apesadumbrados y Juan Carlos lloraba desconsoladamente... -No vas a dejar de verlo hijito, -le decía su mamá-. Tienes que entender que el perro ya no puede seguir con nosotros. Si viviéramos en una casa sería diferente. Pero la Administración del edificio ha decidido que no pueden tenerse perros en este conjunto.", explicacion: "La administración del edificio prohibió tener perros, así que debieron llevarlo al campo con los tíos." },
+                { texto: "¿Cómo se llamaba el perro Fila brasileño que vivía encadenado en la finca?", opciones: ["Kunta", "Zambo", "Paco", "Narda"], correcta: "B", fragmento: "Juancho se acercaba, de vez en cuando, tratando de entablar amistad con el gran Fila, pero nunca lograba despertar su interés. ... -No te metas con él -dijo Zambo al pastor, dejándose caer pesadamente al suelo-. ¿Ves esta cadena en mi cuello? Antes yo era un perro libre como tú...", explicacion: "Zambo era el Fila brasileño que había matado ovejas y fue encadenado." },
+                { texto: "¿Qué animal llegó después del accidente de Sara y se convirtió en amiga de Juancho?", opciones: ["Lupe", "Trompeta", "Tata", "Michi"], correcta: "A", fragmento: "Una tarde llegó a la puerta principal una perrita gozque, sin ninguna distinción, bastante maltratada... La mujer agarró a la perrita por el lazo y la arrastró hacia adentro. Esta olisqueó el plato de comida y en un segundo lo devoró... -Mírala, -dijo la mujer- es linda... Así llegó Lupe a aquel lugar y, principalmente, a la vida sentimental de Juancho.", explicacion: "Lupe, una perrita gozque, llegó maltratada y fue adoptada, convirtiéndose en compañera de Juancho." },
+                { texto: "¿Cuál era la golosina favorita que Juan Carlos llevaba a Juancho los domingos?", opciones: ["Galletas y bocadillos", "Concentrado", "Huesos de carnaza", "Leche con miel"], correcta: "A", fragmento: "El niño le llevaba bocadillos y galletas aunque a su nuevo dueño no le gustaba que quebrara la dieta, pues decía que un perro no debía comer otras cosas porque se le dañaba la digestión... permitía, por consideración con el niño, que los domingos fueran un día diferente para Juancho.", explicacion: "El niño le llevaba galletas y bocadillos, aunque el nuevo dueño prefería que no rompiera la dieta." },
+                { texto: "¿Quién cuidaba de Juancho cuando era cachorro en la ciudad?", opciones: ["Su mamá Narda", "Juan Carlos", "El tío", "La vecina"], correcta: "B", fragmento: "Juancho llegó a vivir a un apartamento... El perrito se entristecía mucho con cada regaño. Se quedaba echado en un rincón del patio, pensando en su familia, pero cuando Juanca llegaba del colegio y lo sacaba a pasear, se olvidaban todas sus penas. Incluso sentía por el niño un cariño muy especial... Él se había convertido en un amigo inseparable del perro.", explicacion: "Juan Carlos fue su mejor amigo desde cachorro, jugaba con él y lo sacaba a pasear." },
+                { texto: "¿Qué le pasó a Sara cuando intentó saltar una cerca?", opciones: ["Se perdió", "Se enredó en alambre de púas", "La mordió un perro", "Se cayó de un árbol"], correcta: "B", fragmento: "El perro recorrió olisqueando, varios metros a la redonda... Junto a la cerca vio un bulto y se acercó presuroso. Allí, enredada en los alambres de púas estaba la gatita, más muerta que viva. Parece que al tratar de saltar la cerca, tal vez perseguida por algún perro, Sara se enredó con la alambrada y en su afán por safarse se rasgó del cuello hasta las patas.", explicacion: "Sara se enredó en alambre de púas y se desprendió la piel del pecho; Juancho la rescató." },
+                { texto: "¿Qué animal ayudaba a medir el tiempo rebuznando cada media hora?", opciones: ["La lora Tata", "La burra Trompeta", "La yegua Nahomi", "El caballo Pegaso"], correcta: "B", fragmento: "También había llegado una burrita un poco vieja, a la que habían puesto por nombre Trompeta, debido a que su rebuzno se parecía mucho al sonido de una trompeta desafinada. Solía rebuznar exactamente cada media hora y se había convertido en un muy eficiente indicador del tiempo para su dueño.", explicacion: "Trompeta rebuznaba exactamente cada media hora, siendo un reloj para el dueño." },
+                { texto: "¿Cómo se llamaba el perro negro enrazado con doberman que molestaba a Juancho?", opciones: ["Zambo", "Kunta", "Paco", "Rufo"], correcta: "B", fragmento: "En una casa vecina vivía un perro negro, enrazado con doverman, llamado Kunta. Era un can corriente, con bastante agilidad y muy ladino. Él también vivía amarrado, pero se daba maña de soltarse en las noches y salía a merodear.", explicacion: "Kunta era el perro negro que vivía en la vecindad y causaba problemas." },
+                { texto: "¿Qué le ocurrió a Juancho cuando salió corriendo tras su amo a la carretera?", opciones: ["Lo atropelló una camioneta", "Se perdió en el monte", "Fue mordido por Kunta", "Se cayó por un barranco"], correcta: "A", fragmento: "El perro se confundió y dudó entre regresarse y seguir. Con la segunda piedra, se asustó y como su primer instinto siempre era obedecer, dio media vuelta sin fijarse que por la carretera subía una camioneta a toda velocidad que lo embistió lanzándolo a varios metros de distancia. El hombre que la conducía ni siquiera paró.", explicacion: "Una camioneta lo embistió dejándolo fracturado y con pérdida auditiva en un oído." }
+            ]
+        },
+        inferencial: {
+            nombre: "Nivel Inferencial",
+            preguntas: [
+                { texto: "¿Por qué los dueños de Narda regalaban a los cachorros sin avisarle?", opciones: ["Porque no querían tantos perros", "Porque necesitaban dinero", "Para que Narda no sufriera más", "Porque los cachorros estaban enfermos"], correcta: "C", fragmento: "Las desapariciones continuaron. Un día hasta se le perdieron dos de un solo golpe. La pobre no entendía qué pasaba con sus cachorros, luego se dio cuenta de que justo antes de que se le perdiera alguno, la llamaba su amo con voz sospechosamente mimosa y le ofrecía una galiletica para perros; la llevaba hasta el jardín interior y después de dársela, la dejaba allí encerrada por un rato.", explicacion: "Aunque doloroso, lo hacían para que Narda no viera cómo se los llevaban, pues ya habían pensionado a Paco." },
+                { texto: "¿Qué enseñanza obtuvo Juancho al ser llevado al campo?", opciones: ["Que los perros no deben comer golosinas", "Que la libertad conlleva responsabilidades y aprendizaje", "Que es mejor vivir en la ciudad", "Que los gatos son peligrosos"], correcta: "B", fragmento: "Así como cuando en el apartamento en la ciudad tuvo que aprender algunas cosas, ahora en el campo tendría que aprender otras tantas y este proceso era un poco doloroso y acompañado de unos cuantos castigos. Aprendió que no debía salirse de los linderos del lote... Aprendió a caminar muy elegante al lado de su amo sin correa de paseo...", explicacion: "En el campo aprendió disciplina, respeto por otros animales y a ser un guardián responsable." },
+                { texto: "¿Por qué Zambo aceptó su cadena y no se escapaba a pesar de poder hacerlo?", opciones: ["Por miedo a que lo mataran", "Por arrepentimiento de haber matado ovejas y traicionar a su amo", "Porque era viejo", "Porque Kunta lo amenazaba"], correcta: "B", fragmento: "Lo imperdonable -seguía Zambo- es que no lo hice por hambre. Fue una locura que repetí varias veces, siempre en compañía de Kunta... Mi amo estaba muy enojado conmigo... pero me quería tanto que después de unas semanas de castigo volvía a confiar en mí. Y yo lo traicionaba... por eso acepto mis cadenas y aunque sé cómo soltarlas me he prometido no volver a hacerlo.", explicacion: "Zambo se sentía culpable por haber matado ovejas por diversión y traicionado la confianza de su amo." },
+                { texto: "¿Qué cualidad desarrolló Juancho después del accidente para compensar la pérdida auditiva?", opciones: ["Visión nocturna", "Olfato más agudo", "Mayor velocidad", "Capacidad de hablar"], correcta: "B", fragmento: "Sin embargo, comenzó a notar que su olfato se desarrollaba cada día más. Ya no era tan fácil escuchar cuando alguien se acercaba, pero en cambio podía olerlo mucho antes de que llegara. Poco a poco, se fue dando cuenta de esta nueva facultad suya y con frecuencia sorprendía a todos, saludándolos mientras se hacía el dormido.", explicacion: "Su olfato se volvió extraordinario, permitiéndole identificar olores a distancia." },
+                { texto: "¿Por qué Kunta se acercó a Juancho y le causó el accidente indirectamente?", opciones: ["Para robarle la comida", "Por envidia y deseo de verlo castigado", "Porque quería matarlo", "Para ayudarle a escapar"], correcta: "B", fragmento: "Kunta, obviamente, había mentido, y como su envidia era tan grande quería que Juancho estuviera amarrado como él por un tiempo y, mientras tanto, poder entrar al lote para molestar a los gatos y la lora, robarse la comida de los perros y amargar a Juancho con su presencia.", explicacion: "Kunta sintió envidia de que Juancho tuviera un hogar y lo engañó para que abandonara el lote." },
+                { texto: "¿Qué simboliza la historia de San Francisco de Asís para los animales de la finca?", opciones: ["Un motivo para tener miedo", "La esperanza de que existe alguien que los cuida y los valora", "Un cuento sin importancia", "Una justificación para pelear"], correcta: "B", fragmento: "San Francisco fue un joven que vivió hace varios siglos... Pero lo más hermoso de este joven era el amor que sentía por toda la naturaleza y, especialmente, por los animales. A todos los llamaba sus hermanos... Por eso, cada vez que estemos en peligro o enfermos, debemos pensar en él y pedirle que nos ayude.", explicacion: "Sara lo cuenta como el patrono de los animales que los cuida y protege, dándoles esperanza." },
+                { texto: "¿Por qué la burra Trompeta se fascinaba con la televisión?", opciones: ["Porque le gustaban los colores", "Por instinto inexplicable, la entretenía", "Porque veía a otros animales", "Porque quería imitar a los humanos"], correcta: "B", fragmento: "Trompeta permanecía suelta por todo el lote y en las noches le encantaba pararse junto a la ventana de la casa que daba al dormitorio. La oscuridad le permitía ver perfectamente la televisión que estaba frente a la ventana. Para todos era inexplicable la fascinación de la burrita por el aparato, pero los divertía y enternecía verla pegada al vidrio.", explicacion: "La narración dice que era inexplicable pero la divertía y enternecía verla pegada al vidrio." },
+                { texto: "¿Qué lección aprendió Kunta después del accidente de Juancho?", opciones: ["Que debe ser más astuto", "Que el remordimiento es muy doloroso y que debe cambiar", "Que los pastores son débiles", "Que debe huir del campo"], correcta: "B", fragmento: "Kunta estaba desesperado y los remordimientos no lo dejaban en paz. Él había visto todo el accidente y sufría porque no había sido su intención causar esa desgracia. ... -Estoy muy arrepentido, soy tan malo que merezco morirme. Si algo le pasa al pastor, no sé cómo podré seguir viviendo.", explicacion: "Kunta se llenó de culpa y comenzó a cambiar su actitud, buscando redención." },
+                { texto: "¿Por qué los dueños de Juancho decidieron adoptar a Lupe a pesar de no ser de raza?", opciones: ["Porque era hermosa", "Porque se apiadaron de ella y vieron que podía ser útil y querida", "Porque Juancho la pidió", "Porque la perrera estaba vacía"], correcta: "B", fragmento: "-No lo hagas -le dijo él-. Luego no va a querer irse. -Pobrecita -insistió ella-. Démosle esto para que coja fuerza y se pueda ir. -No lo va a hacer -continuó él-. Pero tienes razón ayudémosle a la pobre perra. Se ve agotada. ... - ¿No pensarás adoptarla?, ¿o sí? - ¿Por qué no? Hay espacio para otro perro.", explicacion: "La esposa sintió lástima y el amo aceptó porque había espacio y Lupe demostró ser cariñosa." },
+                { texto: "¿Qué representa el título 'Un lugar para ti' en la historia?", opciones: ["El lugar donde duermen los perros", "Que todos los animales merecen un hogar y una oportunidad", "El sitio donde guardan la comida", "El nombre de la finca"], correcta: "B", fragmento: "-¿Quieres que recibamos a Kunta en la casa? -Preguntó el amo a su esposa. ¿Por qué no? Podría vivir abajo en la antigua casa de Zambo... Bienvenido amigo, espero que seas feliz con nosotros. ... -Eso creo... -murmuró el pastor- ¿será que piensan adoptarte también? ... -Aquí también hay UN LUGAR PARA TI.", explicacion: "A lo largo del libro, cada animal encuentra su lugar en la familia y en la comunidad, incluyendo a Kunta al final." }
+            ]
+        },
+        critico: {
+            nombre: "Nivel Crítico",
+            preguntas: [
+                { texto: "¿Crees que fue correcto que los dueños de Narda regalaran a los cachorros sin que ella se despidiera? Argumenta según los valores de la historia.", opciones: ["Sí, porque Narda no sufriría", "No, porque le causó tristeza y confusión", "Depende de la intención, aunque fue doloroso para ella", "Fue cruel e injustificable"], correcta: "C", fragmento: "Las desapariciones continuaron... La pobre no entendía qué pasaba con sus cachorros, luego se dio cuenta de que justo antes de que se le perdiera alguno, la llamaba su amo con voz sospechosamente mimosa... Lastimosamente, luego aprovechaban para desaparecer incluso cuando ella se retiraba para hacer sus necesidades. Pasaba largas horas olfateando por todas partes. Sus amos la consentían más de lo normal, tratando de consolarla.", explicacion: "La intención era evitarle más dolor, pero igual sufrió. La historia muestra que la separación es parte del ciclo, aunque siempre duele." },
+                { texto: "¿Por qué el autor muestra que Juancho tuvo que aprender mediante castigos físicos (periódico enrollado, collar que aprieta)? ¿Es esta una forma válida de educar a un perro?", opciones: ["Sí, es la única manera", "No, existen métodos positivos que no dañan", "En ese contexto era común, pero hoy se prefieren refuerzos positivos", "Los castigos siempre son malos"], correcta: "C", fragmento: "Aprendió, por ejemplo, que debía caminar al lado de sus amos en la calle... Esa lección se la dio un collar que cuando se lo pusieron lo hizo sentir muy bonito y elegante. Sin embargo, con cada tirón que daba, el collar se apretaba más alrededor de su cuello... Esto y otras cosas más se las enseñó un periódico enrollado con el que sus amos le golpeaban la cabeza.", explicacion: "El libro refleja una época y método tradicional; la reflexión crítica permite pensar en alternativas más amables." },
+                { texto: "¿Qué opinas de la decisión del amo de sacrificar a Juancho si la operación no salía bien? ¿Estás de acuerdo con esa posibilidad?", opciones: ["Sí, para evitar sufrimiento", "No, siempre se debe luchar", "Depende del pronóstico de vida digna", "Es un acto de amor evitar dolor innecesario"], correcta: "D", fragmento: "-Tienes que hacerme una promesa. -dijo el amo a su esposa-. Si la operación de Juancho no sale bien y vemos que sufre, no te opondrás a que lo sacrifiquemos. -Sólo en el último caso y si nuestros cuidados fallan -dijo ella secándose las lágrimas- y tú prométenme que me darás el tiempo necesario para estar segura de que no hay oportunidad para él.", explicacion: "El libro plantea el dilema ético: el amo propuso no alargar el sufrimiento si no había calidad de vida, un acto responsable." },
+                { texto: "Kunta cambió su comportamiento luego del accidente. ¿Crees que las personas (y los perros) pueden redimirse realmente?", opciones: ["Sí, si hay arrepentimiento sincero y oportunidades", "No, la maldad es inherente", "Solo si reciben castigo", "Depende del entorno"], correcta: "A", fragmento: "Kunta aceptó cada palabra del pastor con verdadera humildad y con la decisión de cambiar su vida... Kunta, por su parte, no cabía en sí de la dicha. Aprendió rápidamente a obedecer los sonidos que hacía el amo... Se había convertido en uno de ellos y para todos había sido una sorpresa.", explicacion: "La historia muestra que Kunta logró redimirse con esfuerzo y apoyo, destacando la capacidad de cambio." },
+                { texto: "En la finca conviven perros, gatos, una lora y una burra en armonía. ¿Qué mensaje sobre la diversidad y el respeto nos deja?", opciones: ["Que los animales deben estar separados", "Que la convivencia es posible cuando hay respeto y cuidado", "Que los humanos son los únicos que generan conflicto", "Que siempre habrá peleas"], correcta: "B", fragmento: "Era muy común verlos al medio día tomando el sol, en perfecta armonía, Todos echados en el pasto durmiendo plácidamente, sin importarles a quién tuvieran al lado. A veces Sara se recostaba entre la mullida cola de Juancho y él se limitaba a mirarla despectivamente. Otras veces, se encontraban en la fuente tomando agua al tiempo los patos, los gatos y el perro.", explicacion: "A pesar de diferencias, logran vivir en comunidad gracias al respeto mutuo y al ejemplo de los dueños." },
+                { texto: "¿Qué crítica social podrías identificar en la situación de Zambo, que fue encadenado de por vida por sus errores?", opciones: ["Que el castigo perpetuo no permite redención", "Que los errores se pagan con dureza", "Que los dueños son crueles", "Que los perros no deben equivocarse"], correcta: "A", fragmento: "Mi amo estaba muy enojado conmigo... la cadena reemplazó al lazo y cada vez que me escapaba, se hacía más gruesa. Nunca más me volvió a soltar y lo peor de todo es que dejé de ser su perro. Llegaste tú a ocupar mi lugar y el castigo más grande para mí ha sido ese.", explicacion: "Zambo estuvo encadenado por años hasta que finalmente recibió una segunda oportunidad en un criadero." },
+                { texto: "¿Consideras que el libro 'Un lugar para ti' fomenta la tenencia responsable de mascotas? ¿Por qué?", opciones: ["No, muestra muchos abandonos", "Sí, porque resalta el compromiso, cuidado y la búsqueda de hogares adecuados", "Solo muestra el lado triste", "Es indiferente"], correcta: "B", fragmento: "Periódicamente la casa se siguió llenando de cachorritos y continuaba el desfile de perritos y gatitos buscando un hogar y como siempre los amos hacían lo posible porque encontraran uno bueno y si no era así, los tenían con ellos hasta ubicarlos.", explicacion: "A lo largo de la obra se ve cómo los dueños buscan lo mejor para los animales, los cuidan y les dan oportunidades." },
+                { texto: "¿Qué papel juega la empatía en la relación entre los animales y sus amos en la historia?", opciones: ["Ninguno, solo instinto", "Es fundamental para entender sus necesidades y sentimientos", "Solo los humanos sienten empatía", "Los animales no sienten"], correcta: "B", fragmento: "El ama notó la diferencia en el comportamiento de sus mascotas y por fin entendió, junto con el resto de la familia, que los sentimientos de amor y solidaridad no eran exclusivos de la especie humana. Comenzó a comprender el corazón de sus amigos, que no era muy diferente del suyo propio.", explicacion: "Los amos comprenden el dolor de Narda, la tristeza de Zambo, la culpa de Kunta, demostrando empatía." },
+                { texto: "¿Por qué crees que el autor incluye la figura de San Francisco de Asís dentro de la narración?", opciones: ["Para agregar un elemento religioso", "Para destacar la espiritualidad y el respeto por la naturaleza y los animales", "Porque era obligatorio", "Para alargar el libro"], correcta: "B", fragmento: "San Francisco fue un joven... Pero lo más hermoso de este joven era el amor que sentía por toda la naturaleza y, especialmente, por los animales. A todos los llamaba sus hermanos... Por eso, cada vez que estemos en peligro o enfermos, debemos pensar en él y pedirle que nos ayude a mejorar.", explicacion: "San Francisco representa la armonía con la creación, reforzando el mensaje de amor y cuidado hacia los animales." },
+                { texto: "¿Qué enseñanza principal deja la historia para los lectores jóvenes?", opciones: ["Que los perros son mejores que los gatos", "Que la amistad, el perdón y la responsabilidad son valores importantes", "Que todos deben vivir en el campo", "Que los animales no tienen sentimientos"], correcta: "B", fragmento: "Kunta, por su parte, no cabía en sí de la dicha. Aprendió rápidamente a obedecer... Así fueron pasando los meses, y el amo estaba cada vez más convencido de que sus animales vivían como una comunidad. Una comunidad de verdad, que se respetaba y ayudaba, ya sin ninguna sombra de envidias ni rencores.", explicacion: "La obra resalta la amistad, el perdón, la responsabilidad y el valor de dar una segunda oportunidad." }
+            ]
+        }
+    };
+
+    // Variables de estado global
+    let currentUser = { nombre: "", apellido: "", grado: "" };
+    let currentLevel = "literal";
+    let questions = [];
+    let userAnswers = new Array(10).fill(null);
+    let score = 0;
+    let waitingForRetry = false;
+    let incorrectFeedback = [];
+
+    // Visit tracking
+    let totalVisits = 0;
+    let topUser = { nombre: "", apellido: "", visits: 0 };
+
+    function loadStats() {
+        if (localStorage.getItem("totalVisits")) totalVisits = parseInt(localStorage.getItem("totalVisits"));
+        else totalVisits = 0;
+        totalVisits++;
+        localStorage.setItem("totalVisits", totalVisits);
+        if (localStorage.getItem("topUser")) topUser = JSON.parse(localStorage.getItem("topUser"));
+        else topUser = { nombre: "", apellido: "", visits: 0 };
+    }
+
+    function updateTopUser(name, last) {
+        let fullName = (name + " " + last).trim();
+        if (fullName === " ") return;
+        let currentVisits = 0;
+        if (localStorage.getItem("visits_" + fullName)) currentVisits = parseInt(localStorage.getItem("visits_" + fullName));
+        currentVisits++;
+        localStorage.setItem("visits_" + fullName, currentVisits);
+        if (currentVisits > topUser.visits) {
+            topUser = { nombre: name, apellido: last, visits: currentVisits };
+            localStorage.setItem("topUser", JSON.stringify(topUser));
+        }
+    }
+
+    function displayStats() {
+        return `<div class="stats">
+            <span>📊 Visitas totales: ${totalVisits}</span>
+            <span>🏆 Usuario más frecuente: ${topUser.nombre} ${topUser.apellido} (${topUser.visits} visitas)</span>
+        </div>`;
+    }
+
+    function renderStart() {
+        document.getElementById("mainContent").innerHTML = `
+            ${displayStats()}
+            <div class="ilustration">📖🐕📚</div>
+            <h2>¡Bienvenido a la aventura lectora!</h2>
+            <p>Por favor ingresa tus datos para comenzar el desafío de comprensión del libro <strong>"Un lugar para ti"</strong>.</p>
+            <div class="form-group">
+                <label>📛 Nombre:</label>
+                <input type="text" id="nombre" placeholder="Tu nombre">
+            </div>
+            <div class="form-group">
+                <label>📛 Apellidos:</label>
+                <input type="text" id="apellido" placeholder="Tus apellidos">
+            </div>
+            <div class="form-group">
+                <label>🎓 Grado:</label>
+                <input type="text" id="grado" placeholder="Ej: 5° primaria">
+            </div>
+            <button id="startBtn">🚀 Comenzar prueba</button>
+        `;
+        document.getElementById("startBtn").addEventListener("click", () => {
+            let nombre = document.getElementById("nombre").value.trim();
+            let apellido = document.getElementById("apellido").value.trim();
+            let grado = document.getElementById("grado").value.trim();
+            if (!nombre || !apellido || !grado) {
+                alert("Por favor completa todos los campos");
+                return;
+            }
+            currentUser = { nombre, apellido, grado };
+            updateTopUser(nombre, apellido);
+            currentLevel = "literal";
+            waitingForRetry = false;
+            loadLevel(currentLevel);
+        });
+    }
+
+    function loadLevel(levelKey) {
+        const levelData = niveles[levelKey];
+        questions = levelData.preguntas;
+        userAnswers = new Array(10).fill(null);
+        score = 0;
+        incorrectFeedback = [];
+        renderQuestions(levelKey);
+    }
+
+    function renderQuestions(levelKey) {
+        let levelData = niveles[levelKey];
+        let html = `<h2>📖 ${levelData.nombre}</h2>
+                    ${displayStats()}
+                    <p>Lee el fragmento que acompaña cada pregunta y responde. Necesitas mínimo 8 correctas para avanzar.</p>
+                    <div id="questionsContainer">`;
+        questions.forEach((q, idx) => {
+            let selected = userAnswers[idx] !== null ? userAnswers[idx] : -1;
+            html += `<div class="question-card">
+                        <div class="fragmento">
+                            <strong>📖 Lee este fragmento:</strong><br>
+                            “${q.fragmento}”
+                        </div>
+                        <div class="question-text">${idx+1}. ${q.texto}</div>
+                        <div class="options" id="opts-${idx}">
+                            ${q.opciones.map((opt, optIdx) => {
+                                let letter = String.fromCharCode(65+optIdx);
+                                let isSelected = (selected === optIdx);
+                                return `<div class="option ${isSelected ? 'selected' : ''}" data-qidx="${idx}" data-optidx="${optIdx}">${letter}. ${opt}</div>`;
+                            }).join('')}
+                        </div>
+                    </div>`;
+        });
+        html += `</div>
+                <div style="display: flex; gap: 15px; margin-top: 20px;">
+                    <button id="submitLevelBtn">✅ Calificar nivel</button>
+                    <button id="resetLevelBtn" class="btn-secondary">🔄 Reiniciar nivel</button>
+                </div>`;
+        if (waitingForRetry) {
+            html += `<div class="feedback"><strong>❌ No alcanzaste 8 respuestas correctas.</strong> Relee los fragmentos y vuelve a intentarlo.</div>`;
+        }
+        document.getElementById("mainContent").innerHTML = html;
+
+        document.querySelectorAll(".option").forEach(opt => {
+            opt.addEventListener("click", (e) => {
+                let qidx = parseInt(opt.dataset.qidx);
+                let optidx = parseInt(opt.dataset.optidx);
+                userAnswers[qidx] = optidx;
+                renderQuestions(levelKey);
+            });
+        });
+        document.getElementById("submitLevelBtn").addEventListener("click", () => evaluateLevel(levelKey));
+        document.getElementById("resetLevelBtn").addEventListener("click", () => {
+            userAnswers = new Array(10).fill(null);
+            renderQuestions(levelKey);
+        });
+    }
+
+    function evaluateLevel(levelKey) {
+        let correctCount = 0;
+        incorrectFeedback = [];
+        for (let i=0; i<questions.length; i++) {
+            let selectedIdx = userAnswers[i];
+            if (selectedIdx !== null) {
+                let selectedLetter = String.fromCharCode(65+selectedIdx);
+                if (selectedLetter === questions[i].correcta) {
+                    correctCount++;
+                } else {
+                    let correctLetter = questions[i].correcta;
+                    let correctIdx = correctLetter.charCodeAt(0)-65;
+                    let correctText = questions[i].opciones[correctIdx];
+                    incorrectFeedback.push({
+                        pregunta: questions[i].texto,
+                        elegida: questions[i].opciones[selectedIdx],
+                        correcta: correctText,
+                        explicacion: questions[i].explicacion,
+                        fragmento: questions[i].fragmento
+                    });
+                }
+            } else {
+                let correctLetter = questions[i].correcta;
+                let correctIdx = correctLetter.charCodeAt(0)-65;
+                incorrectFeedback.push({
+                    pregunta: questions[i].texto,
+                    elegida: "No respondida",
+                    correcta: questions[i].opciones[correctIdx],
+                    explicacion: questions[i].explicacion,
+                    fragmento: questions[i].fragmento
+                });
+            }
+        }
+        score = correctCount;
+        if (score >= 8) {
+            let nextLevel = "";
+            if (levelKey === "literal") nextLevel = "inferencial";
+            else if (levelKey === "inferencial") nextLevel = "critico";
+            else nextLevel = "completado";
+            
+            if (nextLevel === "completado") {
+                showFinalResults(true);
+            } else {
+                showLevelPassFeedback(nextLevel);
+            }
+        } else {
+            waitingForRetry = true;
+            let feedbackHtml = `<div class="feedback"><h3>❌ No superaste el nivel</h3><p>Obtuviste ${score}/10. Debes obtener al menos 8 para avanzar.</p>`;
+            if (incorrectFeedback.length) {
+                feedbackHtml += `<h4>Revisa tus errores:</h4>`;
+                incorrectFeedback.forEach(err => {
+                    feedbackHtml += `<div class="result-item"><strong>Pregunta:</strong> ${err.pregunta}<br>
+                                    <strong>Tu respuesta:</strong> ${err.elegida}<br>
+                                    <strong>Respuesta correcta:</strong> ${err.correcta}<br>
+                                    <strong>Explicación:</strong> ${err.explicacion}<br>
+                                    <details><summary>📖 Ver fragmento original</summary>“${err.fragmento}”</details></div>`;
+                });
+            }
+            feedbackHtml += `<button id="retryLevelBtn" class="btn-secondary">🔄 Reintentar este nivel</button></div>`;
+            document.getElementById("mainContent").innerHTML = displayStats() + feedbackHtml;
+            document.getElementById("retryLevelBtn").addEventListener("click", () => {
+                waitingForRetry = false;
+                loadLevel(currentLevel);
+            });
+        }
+    }
+
+    function showLevelPassFeedback(nextLevelKey) {
+        let feedbackHtml = `<div class="feedback"><h3>🎉 ¡Felicidades! Superaste el nivel ${niveles[currentLevel].nombre}</h3>
+                            <p>Obtuviste ${score}/10 correctas.</p>`;
+        if (incorrectFeedback.length) {
+            feedbackHtml += `<h4>Revisa tus errores para aprender:</h4>`;
+            incorrectFeedback.forEach(err => {
+                feedbackHtml += `<div class="result-item"><strong>Pregunta:</strong> ${err.pregunta}<br>
+                                <strong>Tu respuesta:</strong> ${err.elegida}<br>
+                                <strong>Correcta:</strong> ${err.correcta}<br>
+                                <strong>Explicación:</strong> ${err.explicacion}<br>
+                                <details><summary>📖 Ver fragmento original</summary>“${err.fragmento}”</details></div>`;
+            });
+        }
+        feedbackHtml += `<button id="nextLevelBtn">🚀 Continuar al siguiente nivel</button>
+                         <button id="sendResultsBtn" class="btn-secondary">📧 Enviar resultados por correo</button></div>`;
+        document.getElementById("mainContent").innerHTML = displayStats() + feedbackHtml;
+        document.getElementById("nextLevelBtn").addEventListener("click", () => {
+            currentLevel = nextLevelKey;
+            waitingForRetry = false;
+            loadLevel(currentLevel);
+        });
+        document.getElementById("sendResultsBtn").addEventListener("click", () => sendEmailResults(currentLevel, score, incorrectFeedback, true));
+    }
+
+    function showFinalResults(success) {
+        let resultadosCompletos = `Usuario: ${currentUser.nombre} ${currentUser.apellido}, Grado: ${currentUser.grado}\n`;
+        resultadosCompletos += `Completó los tres niveles. ¡Excelente trabajo!\n\n`;
+        for (let lvl of ["literal", "inferencial", "critico"]) {
+            resultadosCompletos += `${niveles[lvl].nombre}: se asume superado con mínimo 8/10\n`;
+        }
+        let feedbackHtml = `<div class="feedback"><h3>🏆 ¡HAS COMPLETADO TODOS LOS NIVELES!</h3>
+                            <p>Felicidades, dominas la comprensión lectora de "Un lugar para ti".</p>
+                            <button id="sendFinalResultsBtn">📧 Enviar resultados finales</button>
+                            <button id="restartBtn">🏠 Volver a inicio</button></div>`;
+        document.getElementById("mainContent").innerHTML = displayStats() + feedbackHtml;
+        document.getElementById("sendFinalResultsBtn").addEventListener("click", () => {
+            sendEmailResults("completado", 10, [], true, resultadosCompletos);
+        });
+        document.getElementById("restartBtn").addEventListener("click", () => {
+            renderStart();
+        });
+    }
+
+    function sendEmailResults(level, scoreLevel, incorrectArray, isPartial, customMessage = null) {
+        let subject = `Resultados Proyecto Lector - ${currentUser.nombre} ${currentUser.apellido}`;
+        let body = `Estudiante: ${currentUser.nombre} ${currentUser.apellido}\nGrado: ${currentUser.grado}\n`;
+        if (customMessage) {
+            body += customMessage;
+        } else {
+            body += `Nivel evaluado: ${niveles[level]?.nombre || level}\nPuntaje: ${scoreLevel}/10\n\n`;
+            if (incorrectArray.length) {
+                body += `Errores y correcciones:\n`;
+                incorrectArray.forEach(err => {
+                    body += `- Pregunta: ${err.pregunta}\n  Tu respuesta: ${err.elegida}\n  Correcta: ${err.correcta}\n  Explicación: ${err.explicacion}\n  Fragmento: ${err.fragmento}\n\n`;
+                });
+            } else {
+                body += `¡Sin errores! Excelente comprensión.\n`;
+            }
+        }
+        body += `\n--- Fin del reporte ---`;
+        window.location.href = `mailto:proyectolectormochila@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+        alert("Se abrirá tu cliente de correo para enviar los resultados. Si no se abre, copia el contenido manualmente.");
+    }
+
+    // Inicialización
+    loadStats();
+    renderStart();
+</script>
+</body>
+</html>
